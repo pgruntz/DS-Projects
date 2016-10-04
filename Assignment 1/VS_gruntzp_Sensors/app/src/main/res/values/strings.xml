@@ -10,10 +10,8 @@
         <item>Gyroscope</item>
         <item>Light</item>
         <item>Magnetic Field</item>
-        <item>Orientation</item>
         <item>Pressure</item>
         <item>Proximity</item>
-        <item>Pressure</item>
         <item>Relative Humidity</item>
         <item>Rotation Vector</item>
     </string-array>
