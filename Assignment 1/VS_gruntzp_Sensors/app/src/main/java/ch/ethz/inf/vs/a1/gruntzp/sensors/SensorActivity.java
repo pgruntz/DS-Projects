@@ -24,6 +24,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private String sensorName;
     private SensorTypesImpl sensorType = new SensorTypesImpl();
 
+    private GraphView graph;
+    private GraphContainer graphContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +40,22 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         tv = (TextView) findViewById(R.id.textView);
         tv.setText(sensorName + " (Button Nr.: " + Integer.toString(position) + ")");
 
-        sensorM = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        sensorM = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
 
-        int[] const_sensors = new int[] {Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_AMBIENT_TEMPERATURE, Sensor.TYPE_GRAVITY,
-                                        Sensor.TYPE_GYROSCOPE, Sensor.TYPE_LIGHT, Sensor.TYPE_MAGNETIC_FIELD, Sensor.TYPE_PRESSURE,
-                                        Sensor.TYPE_PROXIMITY, Sensor.TYPE_RELATIVE_HUMIDITY};
+        int[] const_sensors = new int[]{Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_AMBIENT_TEMPERATURE, Sensor.TYPE_GRAVITY,
+                Sensor.TYPE_GYROSCOPE, Sensor.TYPE_LIGHT, Sensor.TYPE_MAGNETIC_FIELD, Sensor.TYPE_PRESSURE,
+                Sensor.TYPE_PROXIMITY, Sensor.TYPE_RELATIVE_HUMIDITY};
         assert (position < const_sensors.length);
         currentSensor = sensorM.getDefaultSensor(const_sensors[position]);
 
+        graph = (GraphView) findViewById(R.id.graph);
+        graphContainer = new GraphContainerImpl(graph);
     }
 
-    //GraphView graph = (GraphView) findViewById(R.id.graph);
-    //private GraphContainer graphContainer = new GraphContainerImpl(graph);
-
-    //public GraphContainer getGraphContainer() {
-    //    return graphContainer;
-    //}
+    public GraphContainer getGraphContainer() {
+        return graphContainer;
+    }
 
     static double xCoord = 0;
     @Override
@@ -67,14 +68,13 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         //tv.setText(sensorName + ": " + Arrays.toString(event.values));
         tv.setText("Number Of Values: " + Integer.toString(size) + "\n" + Arrays.toString(event.values) + unit);
 
-        //graphContainer.addValues(xCoord,event.values);
-        //xCoord++;
+        graphContainer.addValues(xCoord,event.values);
+        xCoord++;
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         tv.setText("Accuracy changed");
-
     }
 
     @Override
