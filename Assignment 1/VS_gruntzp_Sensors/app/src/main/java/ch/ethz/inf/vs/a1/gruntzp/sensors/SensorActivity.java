@@ -34,42 +34,12 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         sensorM = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
-        switch(position){
-            case 0:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-                break;
-            case 1:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-                break;
-            case 2:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_GRAVITY);
-                break;
-            case 3:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-                break;
-            case 4:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_LIGHT);
-                break;
-            case 5:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-                break;
-            case 6:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_PRESSURE);
-                break;
-            case 7:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-                break;
-            case 8:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
-                break;
-            case 9:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-                break;
 
-            default:
-                currentSensor = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-                break;
-        }
+        int[] const_sensors = new int[] {Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_AMBIENT_TEMPERATURE, Sensor.TYPE_GRAVITY,
+                                        Sensor.TYPE_GYROSCOPE, Sensor.TYPE_LIGHT, Sensor.TYPE_MAGNETIC_FIELD, Sensor.TYPE_PRESSURE,
+                                        Sensor.TYPE_PROXIMITY, Sensor.TYPE_RELATIVE_HUMIDITY, Sensor.TYPE_ROTATION_VECTOR};
+        assert (position < const_sensors.length);
+        currentSensor = sensorM.getDefaultSensor(const_sensors[position]);
 
     }
 
