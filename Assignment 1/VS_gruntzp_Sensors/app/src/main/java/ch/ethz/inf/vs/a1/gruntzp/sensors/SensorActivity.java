@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+
 import android.hardware.Sensor;
 
 import java.util.Arrays;
@@ -21,6 +23,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private TextView tv;
     private String sensorName;
     private SensorTypesImpl sensorType = new SensorTypesImpl();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +49,26 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     }
 
+    //GraphView graph = (GraphView) findViewById(R.id.graph);
+    //private GraphContainer graphContainer = new GraphContainerImpl(graph);
+
+    //public GraphContainer getGraphContainer() {
+    //    return graphContainer;
+    //}
+
+    static double xCoord = 0;
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //float val = event.values[0];
 
+        //float val = event.values[0];
         //tv.setText(sensorName + ": " + Float.toString(val));
         int size = sensorType.getNumberValues(currentSensor.getType());
         String unit = sensorType.getUnitString(currentSensor.getType());
-
         //tv.setText(sensorName + ": " + Arrays.toString(event.values));
         tv.setText("Number Of Values: " + Integer.toString(size) + "\n" + Arrays.toString(event.values) + unit);
 
+        //graphContainer.addValues(xCoord,event.values);
+        //xCoord++;
     }
 
     @Override
