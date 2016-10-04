@@ -13,6 +13,5 @@
         <item>Pressure</item>
         <item>Proximity</item>
         <item>Relative Humidity</item>
-        <item>Rotation Vector</item>
     </string-array>
 </resources>
