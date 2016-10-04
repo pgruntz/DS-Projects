@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.util.Random;
+import android.hardware.Sensor;
 
-import static android.R.attr.value;
+import java.util.Arrays;
 
 public class SensorActivity extends AppCompatActivity implements SensorEventListener{
     private SensorManager sensorM;
@@ -45,8 +45,11 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float val = event.values[0];
-        tv.setText(sensorName + ": " + Float.toString(val));
+        //float val = event.values[0];
+
+        //tv.setText(sensorName + ": " + Float.toString(val));
+        tv.setText(sensorName + ": " + Arrays.toString(event.values));
+
 
     }
 
@@ -67,4 +70,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         super.onPause();
         sensorM.unregisterListener(this);
     }
+
 }
+
+
