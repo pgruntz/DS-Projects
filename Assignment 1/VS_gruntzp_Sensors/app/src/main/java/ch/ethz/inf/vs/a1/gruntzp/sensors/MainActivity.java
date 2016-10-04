@@ -22,9 +22,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ListView ls = (ListView) findViewById(R.id.sensor_list);
+
+        String sensorName=getResources().getStringArray(R.array.sensors_array)[position];
+
         Intent intent = new Intent(this, SensorActivity.class);
         intent.putExtra("Position",position);
+        intent.putExtra("sensorName",sensorName);
+
+
 
 
         startActivity(intent);

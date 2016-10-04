@@ -1,14 +1,20 @@
 <resources>
     <string name="app_name">VS_Sensors</string>
     <string name="textview">TextView</string>
+
+    <!--Sensors Overview: https://developer.android.com/guide/topics/sensors/sensors_overview.html-->
     <string-array name="sensors_array">
-        <item>Sensor1</item>
-        <item>Sensor2</item>
-        <item>Sensor3</item>
-        <item>Sensor4</item>
-        <item>Sensor5</item>
-        <item>Sensor6</item>
-        <item>Sensor7</item>
-        <item>Sensor8</item>
+        <item>Accelerometer</item>
+        <item>Temperature</item>
+        <item>Gravity</item>
+        <item>Gyroscope</item>
+        <item>Light</item>
+        <item>Magnetic Field</item>
+        <item>Orientation</item>
+        <item>Pressure</item>
+        <item>Proximity</item>
+        <item>Pressure</item>
+        <item>Relative Humidity</item>
+        <item>Rotation Vector</item>
     </string-array>
 </resources>
