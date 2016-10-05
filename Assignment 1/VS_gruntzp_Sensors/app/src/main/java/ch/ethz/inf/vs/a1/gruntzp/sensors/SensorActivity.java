@@ -2,6 +2,7 @@ package ch.ethz.inf.vs.a1.gruntzp.sensors;
 
 import android.content.Context;
 import android.content.SyncStatusObserver;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import android.hardware.Sensor;
 
@@ -38,7 +41,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
 
         tv = (TextView) findViewById(R.id.textView);
-        tv.setText(sensorName + " (Button Nr.: " + Integer.toString(position) + ")");
+        //tv.setText(sensorName + " (Button Nr.: " + Integer.toString(position) + ")");
+        tv.setText("Sensor wurde nicht gefunden ("+sensorName+")");
+
 
         sensorM = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -51,6 +56,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         graph = (GraphView) findViewById(R.id.graph);
         graphContainer = new GraphContainerImpl(graph);
+
+
+
     }
 
     public GraphContainer getGraphContainer() {
@@ -61,15 +69,23 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        //float val = event.values[0];
-        //tv.setText(sensorName + ": " + Float.toString(val));
         int size = sensorType.getNumberValues(currentSensor.getType());
         String unit = sensorType.getUnitString(currentSensor.getType());
         //tv.setText(sensorName + ": " + Arrays.toString(event.values));
-        tv.setText("Number Of Values: " + Integer.toString(size) + "\n" + Arrays.toString(event.values) + unit);
+        tv.setText("Number Of Values: " + Integer.toString(size) + "\n" + Arrays.toString(event.values) + "\n"+unit);
 
-        graphContainer.addValues(xCoord,event.values);
-        xCoord++;
+        //TODO: should be done in the GraphContainerImpl class
+        graph.getGridLabelRenderer().setVerticalAxisTitle(unit);
+        //graph.setBackgroundColor(Color.CYAN);
+        //graph.getGridLabelRenderer().setHorizontalAxisTitle("Time");
+
+        if(size==1){
+            graphContainer.addValues(xCoord,new float[]{event.values[0]});
+        }else{
+            graphContainer.addValues(xCoord,event.values);
+        }
+        //TODO:xCoord should depend on the time
+        xCoord=xCoord+0.1;
     }
 
     @Override
