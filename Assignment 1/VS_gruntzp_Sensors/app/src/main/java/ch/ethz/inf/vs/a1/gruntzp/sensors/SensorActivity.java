@@ -85,7 +85,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             graphContainer.addValues(xCoord,event.values);
         }
         //TODO:xCoord should depend on the time
-        xCoord=xCoord+0.1;
+        xCoord=xCoord+1;
     }
 
     @Override

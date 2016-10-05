@@ -3,6 +3,7 @@ package ch.ethz.inf.vs.a1.gruntzp.sensors;
 import android.graphics.Color;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -40,8 +41,11 @@ public class GraphContainerImpl implements GraphContainer {
         serie1.setDataPointsRadius(50);
         serie1.setBackgroundColor(GREEN);
 
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScrollable(true);
+        Viewport vp = graph.getViewport();
+        vp.setScrollable(true);
+        vp.setXAxisBoundsManual(true);
+        //vp.setMinX(0);
+        vp.setMaxX(100);
     }
 
 
@@ -50,18 +54,21 @@ public class GraphContainerImpl implements GraphContainer {
     @Override
     public void addValues(double xIndex, float[] values) {
 
-        if (values.length == 1){
-            serie1.appendData(new DataPoint (xIndex,values[0]),true,100);
-        } else{
-            serie1.appendData(new DataPoint (xIndex,values[0]),true,100);
-            serie2.appendData(new DataPoint (xIndex,values[1]),true,100);
-            serie3.appendData(new DataPoint (xIndex,values[2]),true,100);
+        if (values.length == 1) {
+            serie1.appendData(new DataPoint(xIndex, values[0]), true, 100);
+        } else {
+            serie1.appendData(new DataPoint(xIndex, values[0]), true, 100);
+            serie2.appendData(new DataPoint(xIndex, values[1]), true, 100);
+            serie3.appendData(new DataPoint(xIndex, values[2]), true, 100);
         }
-        graph.addSeries(serie1);
-        graph.addSeries(serie2);
-        graph.addSeries(serie3);
-    }
 
+
+        //graph.removeAllSeries();
+
+        //graph.addSeries(serie1);
+        //graph.addSeries(serie2);
+        //graph.addSeries(serie3);
+    }
     @Override
     public float[][] getValues() {
         //TODO
