@@ -45,7 +45,7 @@ public class GraphContainerImpl implements GraphContainer {
         vp.setScrollable(true);
         vp.setXAxisBoundsManual(true);
         //vp.setMinX(0);
-        vp.setMaxX(100);
+        vp.setMaxX(8000);
     }
 
 

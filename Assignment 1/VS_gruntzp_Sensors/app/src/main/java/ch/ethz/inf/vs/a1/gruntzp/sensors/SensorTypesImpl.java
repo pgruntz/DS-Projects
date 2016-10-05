@@ -21,11 +21,11 @@ public class SensorTypesImpl implements SensorTypes {
     public String getUnitString(int sensorType){
         switch(sensorType){
             case Sensor.TYPE_ACCELEROMETER:
-                return "m/s^2";
+                return "m/(s^2)";
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
                 return "°C";
             case Sensor.TYPE_GRAVITY:
-                return "m/s^2";
+                return "m/(s^2)";
             case Sensor.TYPE_GYROSCOPE:
                 return "rad/s";
             case Sensor.TYPE_LIGHT:

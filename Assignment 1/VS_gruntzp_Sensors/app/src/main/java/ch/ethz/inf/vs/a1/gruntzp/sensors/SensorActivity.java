@@ -1,24 +1,17 @@
 package ch.ethz.inf.vs.a1.gruntzp.sensors;
 
 import android.content.Context;
-import android.content.SyncStatusObserver;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
-import android.hardware.Sensor;
-
-import java.util.Arrays;
+import java.math.BigDecimal;
 
 public class SensorActivity extends AppCompatActivity implements SensorEventListener{
     private SensorManager sensorM;
@@ -41,8 +34,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
 
         tv = (TextView) findViewById(R.id.textView);
-        //tv.setText(sensorName + " (Button Nr.: " + Integer.toString(position) + ")");
-        tv.setText("Sensor wurde nicht gefunden ("+sensorName+")");
+        tv.setText("Sensor not found ("+sensorName+")");
 
 
         sensorM = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -53,6 +45,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 Sensor.TYPE_PROXIMITY, Sensor.TYPE_RELATIVE_HUMIDITY};
         assert (position < const_sensors.length);
         currentSensor = sensorM.getDefaultSensor(const_sensors[position]);
+
+        timestamp = System.currentTimeMillis();
 
         graph = (GraphView) findViewById(R.id.graph);
         graphContainer = new GraphContainerImpl(graph);
@@ -65,27 +59,30 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         return graphContainer;
     }
 
-    static double xCoord = 0;
+    static long timestamp = 0;
     @Override
     public void onSensorChanged(SensorEvent event) {
 
+        long xCoord = System.currentTimeMillis()-timestamp;
+
         int size = sensorType.getNumberValues(currentSensor.getType());
         String unit = sensorType.getUnitString(currentSensor.getType());
-        //tv.setText(sensorName + ": " + Arrays.toString(event.values));
-        tv.setText("Number Of Values: " + Integer.toString(size) + "\n" + Arrays.toString(event.values) + "\n"+unit);
+        if (size == 1){
+            tv.setText(sensorName + "\n\nValue: " + Float.toString(event.values[0]));
+        } else{
+            tv.setText(sensorName + "\n\nValues:\n" +
+                    new BigDecimal(Float.toString(event.values[0])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
+                    new BigDecimal(Float.toString(event.values[1])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
+                    new BigDecimal(Float.toString(event.values[2])).setScale(3,BigDecimal.ROUND_HALF_UP).toString());
+        }
 
-        //TODO: should be done in the GraphContainerImpl class
         graph.getGridLabelRenderer().setVerticalAxisTitle(unit);
-        //graph.setBackgroundColor(Color.CYAN);
-        //graph.getGridLabelRenderer().setHorizontalAxisTitle("Time");
 
         if(size==1){
             graphContainer.addValues(xCoord,new float[]{event.values[0]});
         }else{
             graphContainer.addValues(xCoord,event.values);
         }
-        //TODO:xCoord should depend on the time
-        xCoord=xCoord+1;
     }
 
     @Override
