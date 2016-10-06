@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
     }
 
     public void onClickToggle(View v){

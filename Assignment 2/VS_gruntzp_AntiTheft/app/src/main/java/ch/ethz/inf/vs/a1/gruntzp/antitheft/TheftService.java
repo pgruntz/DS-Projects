@@ -45,11 +45,11 @@ public class TheftService extends Service implements AlarmCallback {
                 .setSmallIcon(R.drawable.fav57)
                 .setContentTitle("Theft Alarm!")
                 .setContentText("THEFT ALARM!");
-                //.setCategory(Notification.CATEGORY_ALARM)
-                //.setPriority(Notification.PRIORITY_MAX)
-                //.setVisibility(Notification.VISIBILITY_PUBLIC)
-                //.setVibrate(new long[] {100, 100, 100, 100});
-
+        //.setCategory(Notification.CATEGORY_ALARM)
+        //.setPriority(Notification.PRIORITY_MAX)
+        //.setVisibility(Notification.VISIBILITY_PUBLIC)
+        //.setVibrate(new long[] {100, 100, 100, 100});
+        NotificationManager nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         MainActivity.nManager.notify(1, notBuilder.build());
     }
 }
