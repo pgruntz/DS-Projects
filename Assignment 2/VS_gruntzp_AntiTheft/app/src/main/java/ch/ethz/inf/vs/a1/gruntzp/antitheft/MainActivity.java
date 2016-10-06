@@ -1,5 +1,6 @@
 package ch.ethz.inf.vs.a1.gruntzp.antitheft;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -11,19 +12,19 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static NotificationManager nManager;
+    public static NotificationManager mNotifyMgr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     public void onClickToggle(View v){
         ToggleButton t = (ToggleButton) v;
         if (t.isChecked()){
-            AlarmCallback ac = (AlarmCallback) new TheftService();
+            AlarmCallback ac = (AlarmCallback) new AntiTheftService();
             ac.onDelayStarted();
             Test();
         }
@@ -45,17 +46,21 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.fav57)
                 .setContentTitle("Theft Alarm!")
-                .setContentText("THEFT ALARM!");
-        //.setCategory(Notification.CATEGORY_ALARM)
-        //.setPriority(Notification.PRIORITY_MAX)
-        //.setVisibility(Notification.VISIBILITY_PUBLIC)
-        //.setVibrate(new long[] {100, 100, 100, 100});
+                .setContentText("THEFT ALARM!")
+                .setCategory(Notification.CATEGORY_ALARM)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                .setOngoing(true)
+                .setAutoCancel(false)
+
+                .setVibrate(new long[] {100, 100, 100, 100});
+
         notBuilder.setContentIntent(resultPendingIntent);
         int mNotificationId = 001;
 
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
 // Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, notBuilder.build());
+        MainActivity.mNotifyMgr.notify(mNotificationId, notBuilder.build());
+
     }
 }
