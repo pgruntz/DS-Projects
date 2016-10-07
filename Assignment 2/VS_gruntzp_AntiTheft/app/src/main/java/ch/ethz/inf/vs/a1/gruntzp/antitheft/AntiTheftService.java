@@ -71,7 +71,7 @@ public class AntiTheftService extends Service implements AlarmCallback {
     {
         sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
         accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        movementDetector = new MovementDetector(this, 10);
+        movementDetector = new MovementDetector(this, 12);
 
         sensorManager.registerListener(movementDetector, accel, SensorManager.SENSOR_DELAY_NORMAL);
     }
