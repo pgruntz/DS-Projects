@@ -23,44 +23,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickToggle(View v){
         ToggleButton t = (ToggleButton) v;
-        if (t.isChecked()){
-            AlarmCallback ac = (AlarmCallback) new AntiTheftService();
-            ac.onDelayStarted();
-            Test();
+        if (t.isChecked()) {
+            Intent service = new Intent(this, AntiTheftService.class);
+            startService(service);
+
+        } else {
+            stopService(new Intent(this, AntiTheftService.class));
         }
-    }
-
-    private void Test(){
-        Intent resultIntent = new Intent(this, MainActivity.class);
-
-        // Because clicking the notification opens a new ("special") activity, there's
-        // no need to create an artificial back stack.
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        this,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-        NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.fav57)
-                .setContentTitle("Theft Alarm!")
-                .setContentText("THEFT ALARM!")
-                .setCategory(Notification.CATEGORY_ALARM)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setVisibility(Notification.VISIBILITY_PUBLIC)
-                .setOngoing(true)
-                .setAutoCancel(false)
-
-                .setVibrate(new long[] {100, 100, 100, 100});
-
-        notBuilder.setContentIntent(resultPendingIntent);
-        int mNotificationId = 001;
-
-
-// Builds the notification and issues it.
-        MainActivity.mNotifyMgr.notify(mNotificationId, notBuilder.build());
-
     }
 }
