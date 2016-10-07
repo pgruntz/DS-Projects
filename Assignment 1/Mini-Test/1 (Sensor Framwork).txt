@@ -1,4 +1,4 @@
-//============================================================================================
+//1A============================================================================================
 //List Available sensors on a device
 
 package ch.ethz.inf.vs.gruntzp.mini_test;
@@ -52,3 +52,11 @@ protected void onResume() {
          super.onResume();
          mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
      }
+
+//1B============================================================================================
+
+The problem is, that in the time in which the log method is writing the log, another sensor change can occur and therefore another log method will be called. They can overwrite each other and generate a huge catastrophe.
+
+Another point is that the values wont be copied. So during the log method, the values could be overwritten.
+
+//2============================================================================================
