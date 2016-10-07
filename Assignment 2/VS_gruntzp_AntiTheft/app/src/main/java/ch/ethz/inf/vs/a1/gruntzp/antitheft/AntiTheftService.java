@@ -8,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Debug;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -43,7 +46,7 @@ public class AntiTheftService extends Service implements AlarmCallback {
                 );
         NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.fav57)
-                .setContentTitle("Theft Alarm!")
+                .setContentTitle("Running. Watching!")
                 .setContentText("THEFT ALARM!")
                 .setCategory(Notification.CATEGORY_ALARM)
                 .setPriority(Notification.PRIORITY_MAX)
@@ -81,6 +84,8 @@ public class AntiTheftService extends Service implements AlarmCallback {
 
     @Override
     public void onDelayStarted() {
-
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        r.play();
     }
 }
