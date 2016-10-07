@@ -9,9 +9,19 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ch.ethz.inf.vs.a1.gruntzp.ble.MainActivity">
-
+    <!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Welcome to the Bluetooth Low Energy humidity and temperature tracker!" />
+    -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:divider="@android:drawable/alert_dark_frame"
+        android:dividerHeight="4dp"
+        android:id="@+id/listDeviceNames" />
+
 </RelativeLayout>
