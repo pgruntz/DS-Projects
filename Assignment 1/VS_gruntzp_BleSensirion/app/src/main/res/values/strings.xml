@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">VS_gruntzp_BleSensirion</string>
+    <string name="ble_not_supported">Bluetooth low energy not supported. Leaving app!</string>
+    <string name="bluetooth_enabled">Bluetooth was enabled successfully!</string>
+    <string name="bluetooth_not_enabled">Bluetooth wasn\'t enabled. Leaving app!</string>
+    <string name="fine_loc_denied">Permission not granted. Leaving app!</string>
+    <string name="loc_enabled">Location services enabled successfully!</string>
+    <string name="loc_not_enabled">Location services not enabled. Leaving app!</string>
+</resources>
