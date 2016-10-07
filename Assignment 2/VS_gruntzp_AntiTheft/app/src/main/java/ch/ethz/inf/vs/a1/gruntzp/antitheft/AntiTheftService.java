@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Debug;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -17,6 +18,10 @@ import android.support.v4.app.NotificationCompat;
  */
 
 public class AntiTheftService extends Service implements AlarmCallback {
+    private SensorManager sensorManager;
+    private Sensor accel;
+    private MovementDetector movementDetector;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -61,20 +66,21 @@ public class AntiTheftService extends Service implements AlarmCallback {
     @Override
     public void onCreate()
     {
-        SensorManager sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
-        Sensor accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        
+        sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
+        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        movementDetector = new MovementDetector(this, 10);
+
+        sensorManager.registerListener(movementDetector, accel, SensorManager.SENSOR_DELAY_NORMAL);
     }
-
-
 
     @Override
     public void onDestroy()
     {
-
+        sensorManager.unregisterListener(movementDetector, accel);
     }
 
     @Override
     public void onDelayStarted() {
+
     }
 }

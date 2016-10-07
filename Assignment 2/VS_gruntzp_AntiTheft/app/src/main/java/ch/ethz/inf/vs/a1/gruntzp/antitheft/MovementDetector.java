@@ -11,8 +11,6 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class MovementDetector extends AbstractMovementDetector implements SensorEventListener {
-    private static float thresh = 10;
-
     public MovementDetector(AlarmCallback callback, int sensitivity) {
         super(callback, sensitivity);
     }
@@ -20,6 +18,6 @@ public class MovementDetector extends AbstractMovementDetector implements Sensor
     @Override
     public boolean doAlarmLogic(float[] values) {
         float sum = values[0] + values[1] + values[2];
-        return sum > thresh;
+        return sum > this.sensitivity;
     }
 }
