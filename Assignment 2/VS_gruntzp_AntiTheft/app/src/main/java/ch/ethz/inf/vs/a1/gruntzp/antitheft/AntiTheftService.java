@@ -1,17 +1,15 @@
 package ch.ethz.inf.vs.a1.gruntzp.antitheft;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Debug;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -23,7 +21,10 @@ import android.support.v4.app.NotificationCompat;
 public class AntiTheftService extends Service implements AlarmCallback {
     private SensorManager sensorManager;
     private Sensor accel;
-    private MovementDetector movementDetector;
+    private AbstractMovementDetector movementDetector;
+    private static boolean running = false;
+    Uri notification;
+    MediaPlayer player;
 
     @Nullable
     @Override
@@ -32,6 +33,7 @@ public class AntiTheftService extends Service implements AlarmCallback {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+        running = true;
         //handleCommand(intent);
         Intent resultIntent = new Intent(this, MainActivity.class);
 
@@ -62,8 +64,9 @@ public class AntiTheftService extends Service implements AlarmCallback {
         //MainActivity.mNotifyMgr.notify(mNotificationId, notBuilder.build());
         this.startForeground(mNotificationId, notBuilder.build());
 
-
-       return START_STICKY;
+        notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        player = MediaPlayer.create(this, notification);
+        return START_STICKY;
     }
 
     @Override
@@ -71,7 +74,7 @@ public class AntiTheftService extends Service implements AlarmCallback {
     {
         sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
         accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        movementDetector = new MovementDetector(this, 12);
+        movementDetector = new SpikeMovementDetector(this, 12);
 
         sensorManager.registerListener(movementDetector, accel, SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -80,12 +83,18 @@ public class AntiTheftService extends Service implements AlarmCallback {
     public void onDestroy()
     {
         sensorManager.unregisterListener(movementDetector, accel);
+        player.stop();
+        running = false;
     }
+
+
 
     @Override
     public void onDelayStarted() {
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-        r.play();
+        sensorManager.unregisterListener(movementDetector, accel);
+        player.setLooping(true);
+        player.start();
     }
+
+    public static boolean isRunning() { return running; }
 }

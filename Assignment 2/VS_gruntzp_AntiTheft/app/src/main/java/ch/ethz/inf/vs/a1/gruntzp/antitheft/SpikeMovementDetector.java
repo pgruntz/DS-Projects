@@ -10,7 +10,9 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
 
     @Override
     public boolean doAlarmLogic(float[] values) {
-		// TODO, insert your logic here
-        return false;
+        float sum = values[0] + values[1] + values[2];
+        sum = Math.abs(sum);
+        System.out.println(sum);
+        return sum > this.sensitivity;
     }
 }

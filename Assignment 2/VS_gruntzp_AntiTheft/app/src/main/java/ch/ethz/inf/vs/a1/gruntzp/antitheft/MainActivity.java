@@ -19,13 +19,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        ((ToggleButton) this.findViewById(R.id.tbService)).setChecked(AntiTheftService.isRunning());
     }
 
     public void onClickToggle(View v){
         ToggleButton t = (ToggleButton) v;
         if (t.isChecked()) {
+
             Intent service = new Intent(this, AntiTheftService.class);
             startService(service);
+
 
         } else {
             stopService(new Intent(this, AntiTheftService.class));
