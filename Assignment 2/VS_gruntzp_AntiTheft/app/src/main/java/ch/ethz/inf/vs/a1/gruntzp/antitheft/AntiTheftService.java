@@ -10,9 +10,12 @@ import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by PhiSc on 04.10.2016.
@@ -30,6 +33,8 @@ public class AntiTheftService extends Service implements AlarmCallback, UnlockLi
 
     Uri notification;
     MediaPlayer player;
+
+    private int delay = 5;
 
     @Nullable
     @Override
@@ -91,19 +96,27 @@ public class AntiTheftService extends Service implements AlarmCallback, UnlockLi
     @Override
     public void onDestroy()
     {
-        sensorManager.unregisterListener(movementDetector, accel);
+        Log.d("AntiTheft", "destroyed");
         player.stop();
+        sensorManager.unregisterListener(movementDetector, accel);
         running = false;
         unlockReceiver.setListener(null);
     }
 
 
-
     @Override
     public void onDelayStarted() {
         sensorManager.unregisterListener(movementDetector, accel);
-        player.setLooping(true);
-        player.start();
+
+        Toast.makeText(this, "Alarm in " + Integer.toString(delay) + " seconds", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                player.setLooping(true);
+                player.start();
+            }
+        }, 1000 * delay);
     }
 
     public static boolean isRunning() { return running; }
@@ -111,5 +124,6 @@ public class AntiTheftService extends Service implements AlarmCallback, UnlockLi
     @Override
     public void onUnlock() {
         this.stopSelf();
+        Log.d("AntiTheft", "unlocked");
     }
 }
