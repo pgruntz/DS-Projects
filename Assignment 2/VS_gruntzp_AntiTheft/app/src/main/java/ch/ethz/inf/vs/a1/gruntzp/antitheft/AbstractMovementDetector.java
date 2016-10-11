@@ -3,6 +3,7 @@ package ch.ethz.inf.vs.a1.gruntzp.antitheft;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.util.Log;
 
 import ch.ethz.inf.vs.a1.gruntzp.antitheft.AlarmCallback;
 
@@ -19,13 +20,14 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     // Sensor monitoring
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+        Log.d("info", "Our test device did not have an linear accelerometer!");
+        if (true || event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             // Copy values because the event is not owned by the application
             float[] values = event.values.clone();
             if(doAlarmLogic(values)){
                 callback.onDelayStarted();
             }
-        //}
+        }
     }
 
     @Override

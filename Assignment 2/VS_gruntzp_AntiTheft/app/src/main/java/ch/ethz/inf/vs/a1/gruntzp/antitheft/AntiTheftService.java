@@ -18,11 +18,16 @@ import android.support.v4.app.NotificationCompat;
  * Created by PhiSc on 04.10.2016.
  */
 
-public class AntiTheftService extends Service implements AlarmCallback {
+public class AntiTheftService extends Service implements AlarmCallback, UnlockListener {
+
+    private static boolean running = false;
+
     private SensorManager sensorManager;
     private Sensor accel;
     private AbstractMovementDetector movementDetector;
-    private static boolean running = false;
+
+    private UserPresentBroadcastReceiver unlockReceiver = new UserPresentBroadcastReceiver();
+
     Uri notification;
     MediaPlayer player;
 
@@ -66,6 +71,9 @@ public class AntiTheftService extends Service implements AlarmCallback {
 
         notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         player = MediaPlayer.create(this, notification);
+
+        unlockReceiver.setListener(this);
+
         return START_STICKY;
     }
 
@@ -77,6 +85,7 @@ public class AntiTheftService extends Service implements AlarmCallback {
         movementDetector = new SpikeMovementDetector(this, 12);
 
         sensorManager.registerListener(movementDetector, accel, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
     @Override
@@ -85,6 +94,7 @@ public class AntiTheftService extends Service implements AlarmCallback {
         sensorManager.unregisterListener(movementDetector, accel);
         player.stop();
         running = false;
+        unlockReceiver.setListener(null);
     }
 
 
@@ -97,4 +107,9 @@ public class AntiTheftService extends Service implements AlarmCallback {
     }
 
     public static boolean isRunning() { return running; }
+
+    @Override
+    public void onUnlock() {
+        this.stopSelf();
+    }
 }
