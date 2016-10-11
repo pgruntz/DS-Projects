@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.jjoe64.graphview.GraphView;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class SensorActivity extends AppCompatActivity implements SensorEventListener{
     private SensorManager sensorM;
@@ -62,26 +63,26 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     static long timestamp = 0;
     @Override
     public void onSensorChanged(SensorEvent event) {
-
+        float[] copy = event.values.clone();
         long xCoord = System.currentTimeMillis()-timestamp;
 
         int size = sensorType.getNumberValues(currentSensor.getType());
         String unit = sensorType.getUnitString(currentSensor.getType());
         if (size == 1){
-            tv.setText(sensorName + "\n\nValue: " + Float.toString(event.values[0]));
+            tv.setText(sensorName + "\n\nValue: " + Float.toString(copy[0]));
         } else{
             tv.setText(sensorName + "\n\nValues:\n" +
-                    new BigDecimal(Float.toString(event.values[0])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
-                    new BigDecimal(Float.toString(event.values[1])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
-                    new BigDecimal(Float.toString(event.values[2])).setScale(3,BigDecimal.ROUND_HALF_UP).toString());
+                    new BigDecimal(Float.toString(copy[0])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
+                    new BigDecimal(Float.toString(copy[1])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
+                    new BigDecimal(Float.toString(copy[2])).setScale(3,BigDecimal.ROUND_HALF_UP).toString());
         }
 
         graph.getGridLabelRenderer().setVerticalAxisTitle(unit);
 
         if(size==1){
-            graphContainer.addValues(xCoord,new float[]{event.values[0]});
+            graphContainer.addValues(xCoord,new float[]{copy[0]});
         }else{
-            graphContainer.addValues(xCoord,event.values);
+            graphContainer.addValues(xCoord,copy);
         }
     }
 
