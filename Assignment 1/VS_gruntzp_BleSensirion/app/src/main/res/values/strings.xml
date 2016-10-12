@@ -10,5 +10,17 @@
     <string name="stop_scan">Stopped BLE scan</string>
     <string name="get_loc">You need to enable location services to use this app</string>
     <string name="found_device">Found a BLE device</string>
-    <string name="test">Test toast</string> <!-- For debug purposes -->
+    <string name="textview">Sensirion HumiGadget</string>
+    <string name="connection_failed">Could not connect</string>
+    <string name="discovery_failed">Service discovery failed</string>
+    <string name="disconnected">Disconnected from device</string>
+    <string name="no_services">Couldn\'t retrieve services</string>
+    <string name="no_characteristics">Couldn\'t add characteristics</string>
+    <string name="no_notifications">Couldn\'t enable notifications</string>
+    <string name="temp">Temperature</string>
+    <string name="hum">Humidity</string>
+    <string name="celsius">° C</string>
+    <string name="farenheit">° F</string>
+    <string name="rh">% RH</string>
+    <string name="dev_name">Smart Humigadget</string>
 </resources>
