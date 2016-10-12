@@ -43,7 +43,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         int[] const_sensors = new int[]{Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_AMBIENT_TEMPERATURE, Sensor.TYPE_GRAVITY,
                 Sensor.TYPE_GYROSCOPE, Sensor.TYPE_LIGHT, Sensor.TYPE_MAGNETIC_FIELD, Sensor.TYPE_PRESSURE,
-                Sensor.TYPE_PROXIMITY, Sensor.TYPE_RELATIVE_HUMIDITY};
+                Sensor.TYPE_PROXIMITY, Sensor.TYPE_RELATIVE_HUMIDITY, Sensor.TYPE_LINEAR_ACCELERATION, Sensor.TYPE_ROTATION_VECTOR};
         assert (position < const_sensors.length);
         currentSensor = sensorM.getDefaultSensor(const_sensors[position]);
 
