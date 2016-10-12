@@ -13,6 +13,7 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
         float sum = values[0] + values[1] + values[2];
         sum = Math.abs(sum);
         System.out.println(sum);
-        return sum > this.sensitivity;
+        // -10 because we don't have linear accelerometer
+        return sum - 9.81 > this.sensitivity;
     }
 }
