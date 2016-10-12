@@ -8,12 +8,13 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
         super(callback, sensitivity);
     }
 
+
     @Override
     public boolean doAlarmLogic(float[] values) {
-        float sum = values[0] + values[1] + values[2];
-        sum = Math.abs(sum);
+        float sum = Math.abs(values[0]) + Math.abs(values[1]) + Math.abs(values[2]);
         System.out.println(sum);
-        // -10 because we don't have linear accelerometer
-        return sum - 9.81 > this.sensitivity;
+        // -gravitiy because we neither have a linear accelerometer on the emulator nor on the phone
+        if (AbstractMovementDetector.useNonLinearSensor) sum -= 9.81;
+        return sum >= this.sensitivity;
     }
 }
