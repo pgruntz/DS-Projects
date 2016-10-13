@@ -88,8 +88,8 @@ public class AntiTheftService extends Service implements AlarmCallback, UnlockLi
     public void onCreate()
     {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        this.delay = sharedPref.getInt("delay", 5);
-        int sensitivity = sharedPref.getInt("sensitivity", 10);
+        this.delay = Integer.valueOf(sharedPref.getString("delay", "5"));
+        int sensitivity = Integer.valueOf(sharedPref.getString("sensitivity", "10"));
 
         sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
         if (AbstractMovementDetector.useNonLinearSensor)
@@ -97,7 +97,8 @@ public class AntiTheftService extends Service implements AlarmCallback, UnlockLi
         else
             accel = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
-        if (sharedPref.getString("detector_type", "a") == "a")
+        String sSensor = sharedPref.getString("detector_type", "a");
+        if (sSensor.equals("a"))
             movementDetector = new SpikeMovementDetector(this, sensitivity);
         else
             movementDetector = new DifferenceMovementDetector(this, sensitivity);

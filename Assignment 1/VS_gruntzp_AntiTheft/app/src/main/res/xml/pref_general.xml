@@ -8,8 +8,8 @@
         android:selectAllOnFocus="true"
         android:title="@string/delay_setting" />
     <EditTextPreference
-        android:defaultValue="2.2"
-        android:inputType="numberDecimal"
+        android:defaultValue="2"
+        android:inputType="number"
         android:key="sensitivity"
         android:maxLength="3"
         android:singleLine="true"
