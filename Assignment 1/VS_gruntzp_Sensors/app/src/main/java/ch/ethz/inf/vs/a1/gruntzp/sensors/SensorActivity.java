@@ -69,12 +69,12 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         int size = sensorType.getNumberValues(currentSensor.getType());
         String unit = sensorType.getUnitString(currentSensor.getType());
         if (size == 1){
-            tv.setText(sensorName + "\n\nValue: " + Float.toString(copy[0]));
+            tv.setText(sensorName + "\n\nValue: " + Float.toString(copy[0]) + unit);
         } else{
             tv.setText(sensorName + "\n\nValues:\n" +
-                    new BigDecimal(Float.toString(copy[0])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
-                    new BigDecimal(Float.toString(copy[1])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + "/" +
-                    new BigDecimal(Float.toString(copy[2])).setScale(3,BigDecimal.ROUND_HALF_UP).toString());
+                    new BigDecimal(Float.toString(copy[0])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + unit + "\n" +
+                    new BigDecimal(Float.toString(copy[1])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + unit + "\n" +
+                    new BigDecimal(Float.toString(copy[2])).setScale(3,BigDecimal.ROUND_HALF_UP).toString() + unit);
         }
 
         graph.getGridLabelRenderer().setVerticalAxisTitle(unit);

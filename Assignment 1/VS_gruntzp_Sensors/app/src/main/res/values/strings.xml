@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VS_Sensors</string>
+    <string name="app_name">VS_gruntzp_Sensors</string>
     <string name="textview">TextView</string>
 
     <!--Sensors Overview: https://developer.android.com/guide/topics/sensors/sensors_overview.html-->

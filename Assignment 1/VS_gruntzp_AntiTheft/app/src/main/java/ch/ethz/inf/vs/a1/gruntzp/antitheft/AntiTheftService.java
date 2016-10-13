@@ -86,7 +86,10 @@ public class AntiTheftService extends Service implements AlarmCallback, UnlockLi
     public void onCreate()
     {
         sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
-        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (AbstractMovementDetector.useNonLinearSensor)
+            accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        else
+            accel = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         movementDetector = new SpikeMovementDetector(this, 2);
 
         sensorManager.registerListener(movementDetector, accel, SensorManager.SENSOR_DELAY_NORMAL);
