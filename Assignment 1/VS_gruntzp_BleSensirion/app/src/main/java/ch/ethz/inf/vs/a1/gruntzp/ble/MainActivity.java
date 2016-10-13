@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatActivity {
             mBleScanner.stopScan(mScanCallback);
         }
 
-        listDevices.clear();
-        listDeviceNames.clear();
-        mArrayAdapter.notifyDataSetChanged();
+        //listDevices.clear();
+        //listDeviceNames.clear();
+        //mArrayAdapter.notifyDataSetChanged();
     }
 
     private void scanLeDevice() {
@@ -212,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mScanning = false;
                 if(mScanning) {
                     mScanning = false;
                     mBleScanner.stopScan(mScanCallback);
@@ -228,24 +227,26 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-
+            Log.d("CALLBACKTYPE", Integer.toString(callbackType));
             int index;
-            boolean deviceAdded;
-            if (callbackType == 4) { //Previously matched device lost
+            boolean deviceAdded = false;
+            if (callbackType == ScanSettings.CALLBACK_TYPE_MATCH_LOST) { //Previously matched device lost
                 index = listDevices.indexOf(result.getDevice());
                 if(!(index == -1)) { //Device has to be removed
                     listDevices.remove(index);
                     listDeviceNames.remove(index);
                     mArrayAdapter.notifyDataSetChanged();
                 }
-            } else { //New device found
+            } else  { //New device found
 
                 boolean duplicate = false;
-//                for (BluetoothDevice d : listDevices) {
-//                    if(d.getAddress().equals(result.getDevice().getAddress()))
-//                        duplicate = true;
-//                }
-                deviceAdded = listDevices.add(result.getDevice());
+                for (BluetoothDevice d : listDevices) {
+                    if(d.getAddress().equals(result.getDevice().getAddress()))
+                        duplicate = true;
+                }
+                if (!duplicate) {
+                    deviceAdded = listDevices.add(result.getDevice());
+                }
                 if (deviceAdded) {
                     listDeviceNames.add(listDevices.get(listDevices.size()-1).getName());
                     mArrayAdapter.notifyDataSetChanged();

@@ -57,6 +57,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
         graph.addSeries(temp);
         graph.addSeries(hum);
+        graph.getGridLabelRenderer().setPadding(20);
 
         temp.setColor(BLUE);
         temp.setDataPointsRadius(50);
