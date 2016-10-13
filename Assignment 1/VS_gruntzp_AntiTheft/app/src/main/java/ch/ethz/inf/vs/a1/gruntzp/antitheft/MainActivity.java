@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private void refreshToggleButton(){
         boolean running = AntiTheftService.isRunning();
         Log.d("is running?", Boolean.toString(running));
-        ((ToggleButton) this.findViewById(R.id.tbService)).setChecked(running);
+        ToggleButton t =((ToggleButton) this.findViewById(R.id.tbService));
+        t.setChecked(running);
+        //t.invalidate();
     }
 }

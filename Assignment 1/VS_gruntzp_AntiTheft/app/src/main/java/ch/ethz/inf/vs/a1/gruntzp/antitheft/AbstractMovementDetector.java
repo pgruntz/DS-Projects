@@ -9,7 +9,7 @@ import ch.ethz.inf.vs.a1.gruntzp.antitheft.AlarmCallback;
 
 public abstract class AbstractMovementDetector implements SensorEventListener {
 
-    public static final boolean useNonLinearSensor = false;
+    public static final boolean useNonLinearSensor = true;
 
 
     protected AlarmCallback callback;

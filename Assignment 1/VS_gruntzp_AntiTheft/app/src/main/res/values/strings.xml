@@ -7,10 +7,7 @@
     <string name="delay_setting">Delay in Seconds</string>
     <string name="m_detect_setting">Movement Detector</string>
     <string name="sensitivity_setting">Sensitivity</string>
-    <string-array name="Movement_Detector">
-        <item>Spike Detector</item>
-        <item>Difference Detector</item>
-    </string-array>
+
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 

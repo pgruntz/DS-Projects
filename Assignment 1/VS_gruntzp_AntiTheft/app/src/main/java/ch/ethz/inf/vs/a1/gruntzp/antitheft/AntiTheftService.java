@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
@@ -12,6 +13,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -85,12 +87,20 @@ public class AntiTheftService extends Service implements AlarmCallback, UnlockLi
     @Override
     public void onCreate()
     {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        this.delay = sharedPref.getInt("delay", 5);
+        int sensitivity = sharedPref.getInt("sensitivity", 10);
+
         sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
         if (AbstractMovementDetector.useNonLinearSensor)
             accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         else
             accel = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        movementDetector = new SpikeMovementDetector(this, 2);
+
+        if (sharedPref.getString("detector_type", "a") == "a")
+            movementDetector = new SpikeMovementDetector(this, sensitivity);
+        else
+            movementDetector = new DifferenceMovementDetector(this, sensitivity);
 
         sensorManager.registerListener(movementDetector, accel, SensorManager.SENSOR_DELAY_NORMAL);
 
