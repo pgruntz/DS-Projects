@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.JSonSensor;
 import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.RawHttpSensor;
 import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.TextSensor;
 import ch.ethz.inf.vs.a2.sensor.AbstractSensor;
@@ -48,8 +49,8 @@ public class RESTactivity extends AppCompatActivity implements SensorListener {
         else if (b.getText() == getString(R.string.HttpClass))
             sensor = new TextSensor();
         else if (b.getText() == getString(R.string.JSon))
-            sensor = new TextSensor();
-            // ändern
+            sensor = new JSonSensor();
+
         sensor.registerListener(this);
         sensor.getTemperature();
     }

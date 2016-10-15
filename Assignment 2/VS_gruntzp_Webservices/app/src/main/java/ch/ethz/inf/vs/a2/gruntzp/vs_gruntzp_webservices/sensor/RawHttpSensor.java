@@ -51,6 +51,6 @@ public class RawHttpSensor extends AbstractSensor {
             String value = matcher.group(1);
             return Double.valueOf(value);
         } else
-            return 0;
+            return -1;
     }
 }

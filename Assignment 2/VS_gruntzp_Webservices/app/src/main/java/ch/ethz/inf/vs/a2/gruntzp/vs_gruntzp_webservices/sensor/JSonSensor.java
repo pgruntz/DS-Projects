@@ -44,9 +44,11 @@ public class JSonSensor extends AbstractSensor {
     public double parseResponse(String response) {
         try {
             JSONObject jo = new JSONObject(response);
-            return 0;
+            String result = jo.getString("value");
+            return Double.valueOf(result);
         } catch (JSONException e) {
-            return 0;
+            e.printStackTrace();
+            return -1;
         }
     }
 }
