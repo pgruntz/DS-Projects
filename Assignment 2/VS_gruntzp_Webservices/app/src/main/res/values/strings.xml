@@ -3,4 +3,7 @@
     <string name="task1">Raw HTTP Request</string>
     <string name="task2">Task2</string>
     <string name="task3">Task3</string>
+    <string name="RawHTML">Raw Http Request</string>
+    <string name="HttpClass">Http Class</string>
+    <string name="JSon">Json Response</string>
 </resources>

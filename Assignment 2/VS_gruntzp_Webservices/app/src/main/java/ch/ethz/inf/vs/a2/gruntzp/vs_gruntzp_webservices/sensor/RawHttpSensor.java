@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.HttpRawRequestImpl;
+import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.RESTactivity;
 import ch.ethz.inf.vs.a2.sensor.AbstractSensor;
 
 /**
@@ -19,19 +20,16 @@ import ch.ethz.inf.vs.a2.sensor.AbstractSensor;
  */
 
 public class RawHttpSensor extends AbstractSensor {
-    private static String host = "vslab.inf.ethz.ch";
-    private static String path = "/sunspots/Spot1/sensors/temperature";
-    private static int port = 8081;
 
     @Override
     public String executeRequest() throws Exception {
-        String request = (new HttpRawRequestImpl()).generateRequest(host, port, path);
-        Socket s = new Socket(InetAddress.getByName(host), port);
+        String request = (new HttpRawRequestImpl()).generateRequest(RESTactivity.host, RESTactivity.port, RESTactivity.path);
+        Socket s = new Socket(InetAddress.getByName(RESTactivity.host), RESTactivity.port);
 
         PrintWriter out = new PrintWriter(s.getOutputStream());
         out.print(request);
         out.flush();
-        InputStream is = s.getInputStream();
+
         BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
         StringBuilder sb = new StringBuilder();
