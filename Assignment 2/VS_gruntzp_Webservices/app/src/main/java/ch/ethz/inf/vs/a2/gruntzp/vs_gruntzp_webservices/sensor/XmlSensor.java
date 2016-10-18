@@ -25,14 +25,7 @@ import ch.ethz.inf.vs.a2.sensor.AbstractSensor;
  */
 
 public class XmlSensor extends AbstractSensor {
-    private static String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"+
-                                "    <S:Header/>\n"+
-                                "    <S:Body>\n"+
-                                "        <ns2:getSpot xmlns:ns2=\"http://webservices.vslecture.vs.inf.ethz.ch/\">\n"+
-                                "            <id>Spot3</id>\n"+
-                                "        </ns2:getSpot>\n"+
-                                "    </S:Body>\n"+
-                                "</S:Envelope>";
+
 
     @Override
     public String executeRequest() throws Exception {
@@ -45,7 +38,7 @@ public class XmlSensor extends AbstractSensor {
 
         try {
             OutputStream output = new BufferedOutputStream(connection.getOutputStream());
-            output.write(data.getBytes());
+            output.write(SoapActivity.soap_request.getBytes());
             output.flush();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));

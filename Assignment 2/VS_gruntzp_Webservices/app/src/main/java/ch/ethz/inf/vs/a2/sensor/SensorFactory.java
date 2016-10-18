@@ -1,6 +1,7 @@
 package ch.ethz.inf.vs.a2.sensor;
 
 import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.JSonSensor;
+import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.SoapSensor;
 import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.TextSensor;
 import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.XmlSensor;
 import ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.sensor.RawHttpSensor;
@@ -23,7 +24,7 @@ public abstract class SensorFactory {
 			return new XmlSensor();
 		case SOAP:
 			// return Sensor implementation using a SOAPObject
-			//return new SoapSensor();
+			return new SoapSensor();
 		default:
 			return null;
 		}

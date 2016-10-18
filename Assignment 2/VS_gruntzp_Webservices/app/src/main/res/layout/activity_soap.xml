@@ -19,6 +19,11 @@
             android:layout_height="wrap_content"
             android:text="@string/manSoap"
             android:onClick="getTemperature"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/soapLib"
+            android:onClick="getTemperature"/>
     </LinearLayout>
 
     <LinearLayout
