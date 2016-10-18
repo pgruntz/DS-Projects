@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">VS_gruntzp_Webservices</string>
-    <string name="task1">Raw HTTP Request</string>
-    <string name="task2">Task2</string>
-    <string name="task3">Task3</string>
+    <string name="task1">REST Client</string>
+    <string name="task2">Soap Client</string>
+    <string name="task3">REST Server</string>
     <string name="RawHTML">Raw Http Request</string>
     <string name="HttpClass">Http Class</string>
     <string name="JSon">Json Response</string>
+    <string name="manSoap">Manual Soap</string>
+    <string name="ip">IP Address:</string>
+    <string name="port">Port:</string>
+    <string name="title_activity_soap">SoapActivity</string>
 </resources>

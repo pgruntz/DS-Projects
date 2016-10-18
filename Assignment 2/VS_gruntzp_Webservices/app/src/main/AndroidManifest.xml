@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,9 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RESTactivity"></activity>
-
+        <activity android:name=".RESTactivity" />
+        <activity android:name=".ServerAcitivity" />
+        <activity android:name=".SoapActivity"></activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

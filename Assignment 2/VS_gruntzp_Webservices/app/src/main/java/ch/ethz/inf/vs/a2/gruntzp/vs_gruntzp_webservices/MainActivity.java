@@ -20,4 +20,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RESTactivity.class);
         this.startActivity(intent);
     }
+
+    public void onRestServer(View v){
+        Intent intent = new Intent(this, ServerAcitivity.class);
+        this.startActivity(intent);
+    }
+
+    public void onSoapClient(View v){
+        Intent intent = new Intent(this, SoapActivity.class);
+        this.startActivity(intent);
+    }
 }
