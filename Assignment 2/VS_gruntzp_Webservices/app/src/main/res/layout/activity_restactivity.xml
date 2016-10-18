@@ -12,7 +12,7 @@
     tools:context="ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices.RESTactivity">
 
     <LinearLayout
-        android:layout_marginBottom="40sp"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <Button
@@ -25,13 +25,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/HttpClass"/>
-        <Button
-            android:onClick="getTemperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/JSon"/>
+
     </LinearLayout>
+    <Button
+        android:onClick="getTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/JSon"/>
     <LinearLayout
+        android:layout_marginTop="40sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
