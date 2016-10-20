@@ -45,22 +45,23 @@ public class ServerService extends Service {
                         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                         StringBuilder sb = new StringBuilder();
-                        String rs = null;
-                        while ((rs = in.readLine()) != null) {
+                        String rs = in.readLine();
+                        while (rs!=null && rs.length() != 0) {
                             sb.append(rs + "\n");
+                            rs = in.readLine();
                         }
 
-                        if (sb != null) {
+
                             String request = sb.toString();
                             Intent broadcastIntent = new Intent();
                             broadcastIntent.putExtra("request", request);
                             broadcastIntent.setAction("REQUEST");
                             sendBroadcast(broadcastIntent);
-                        }
+
 
 
                         //String send = "HTTP/1.1 200 OK\nserver: grizzly/1.9.18\nContent-Type: text/html\nDate: Thu, 20 Oct 2016 16:23:59 GMT\nConnection: close\n\n<html>\n <body>\n    <h1>Test Content</h1>\n <p>Testing, testing, testing...</p>\n   </body>\n</html>";
-                        String send = "<html><body><h1>Test Content</h1><p>Testing,testing, testing...</p></body></html>";
+                        String send = "HTTP/1.1 200 OK\r\n\r\n<html><body><h1>Test Content</h1><p>Testing,testing, testing...</p></body></html>";
                         PrintWriter out = new PrintWriter(socket.getOutputStream());
                         out.println(send);
                         out.flush();
