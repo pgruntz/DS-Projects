@@ -20,6 +20,11 @@
         <activity android:name=".RESTactivity" />
         <activity android:name=".ServerAcitivity" />
         <activity android:name=".SoapActivity"></activity>
+
+        <service
+            android:name=".ServerService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

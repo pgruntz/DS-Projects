@@ -28,6 +28,7 @@
             android:layout_weight="0.00"
             android:layout_rowSpan="2"
             android:layout_marginRight="30sp"
+            android:onClick="onClickToggle"
             />
 
         <LinearLayout
