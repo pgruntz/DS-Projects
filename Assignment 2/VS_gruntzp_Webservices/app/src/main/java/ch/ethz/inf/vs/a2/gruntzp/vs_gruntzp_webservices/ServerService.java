@@ -1,7 +1,12 @@
 package ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -24,35 +29,49 @@ import static android.content.ContentValues.TAG;
  * Created by Patrick on 10/20/2016.
  */
 
-public class ServerService extends Service {
+public class ServerService extends Service{
 
     private int port = 8080;
     private ServerSocket server;
 
-    private String rootHTML = "HTTP/1.1 200 OK\r\n\r\n"+
+    private String rootHTML(){
+        return "HTTP/1.1 200 OK\r\n\r\n"+
             "<html><body><h1>Phone Webservices - Root</h1>" +
             "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li>" +
             "<ul><li><a href = \"/sensors\">Sensors</a></li><li><a href = \"/actuators\">Actuators</a></li></ul><br><br><br></body><html>";
-    private String sensorsHTML = "HTTP/1.1 200 OK\r\n\r\n"+
-            "<html><body><h1>Sensors</h1>" +
-            "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li>" +
-            "<ul><li><a href = \"/sensors/sensor1\">Sensor 1</a></li><li><a href = \"/sensors/sensor2\">Sensor 2</a></li></ul><br><br><br></body><html>";
-    private String actuatorsHTML = "HTTP/1.1 200 OK\r\n\r\n"+
-            "<html><body><h1>Actuators</h1>" +
-            "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li>" +
-            "<ul><li><a href = \"/actuators/actuator1\">Actuator 1</a></li><li><a href = \"/actuators/actuator2\">Actuator 2</a></li></ul><br><br><br></body><html>";
-    private String sensor1HTML = "HTTP/1.1 200 OK\r\n\r\n"+
-            "<html><body><h1>Sensor 1</h1>" +
-            "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
-    private String sensor2HTML = "HTTP/1.1 200 OK\r\n\r\n"+
-            "<html><body><h1>Sensor 2</h1>" +
-            "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
-    private String actuator1HTML = "HTTP/1.1 200 OK\r\n\r\n"+
-            "<html><body><h1>Actuator 1</h1>" +
-            "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
-    private String actuator2HTML = "HTTP/1.1 200 OK\r\n\r\n"+
-            "<html><body><h1>Actuator 2</h1>" +
-            "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
+    }
+    private String sensorsHTML(){
+        return "HTTP/1.1 200 OK\r\n\r\n"+
+                "<html><body><h1>Sensors</h1>" +
+                "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li>" +
+                "<ul><li><a href = \"/sensors/sensor1\">Sensor 1</a></li><li><a href = \"/sensors/sensor2\">Sensor 2</a></li></ul><br><br><br></body><html>";
+    }
+    private String actuatorsHTML() {
+        return "HTTP/1.1 200 OK\r\n\r\n" +
+                "<html><body><h1>Actuators</h1>" +
+                "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li>" +
+                "<ul><li><a href = \"/actuators/actuator1\">Actuator 1</a></li><li><a href = \"/actuators/actuator2\">Actuator 2</a></li></ul><br><br><br></body><html>";
+    }
+    private String sensor1HTML(){
+        return "HTTP/1.1 200 OK\r\n\r\n"+
+                "<html><body><h1>Sensor 1<br><br>Value: " + sSensors.getSensorValue(1) + "</h1>" +
+                "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
+    };
+    private String sensor2HTML(){
+        return "HTTP/1.1 200 OK\r\n\r\n"+
+                "<html><body><h1>Sensor 2<br><br>Value: " + sSensors.getSensorValue(2) + "</h1>" +
+                "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
+    }
+    private String actuator1HTML(){
+        return "HTTP/1.1 200 OK\r\n\r\n"+
+                "<html><body><h1>Actuator 1</h1>" +
+                "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
+    }
+    private String actuator2HTML(){
+        return "HTTP/1.1 200 OK\r\n\r\n"+
+                "<html><body><h1>Actuator 2</h1>" +
+                "<ul><li><a id=\"home\" href=\"http://127.0.0.1:1234/\">Home</a></li></ul><br><br><br></body><html>";
+    }
 
 
     @Nullable
@@ -77,23 +96,23 @@ public class ServerService extends Service {
                         String request = in.readLine();
                         String requestArr[] = request.split(" ", 3);
 
-                        String method = requestArr[0];   //the
+                        String method = requestArr[0];
                         String path = requestArr[1];
                         if (method.equals("GET")){
                             if(path.equals("/"))
-                                out.println(rootHTML);
+                                out.println(rootHTML());
                             if(path.equals("/sensors"))
-                                out.println(sensorsHTML);
+                                out.println(sensorsHTML());
                             if(path.equals("/actuators"))
-                                out.println(actuatorsHTML);
+                                out.println(actuatorsHTML());
                             if(path.equals("/sensors/sensor1"))
-                                out.println(sensor1HTML);
+                                out.println(sensor1HTML());
                             if(path.equals("/sensors/sensor2"))
-                                out.println(sensor2HTML);
+                                out.println(sensor2HTML());
                             if(path.equals("/actuators/actuator1"))
-                                out.println(actuator1HTML);
+                                out.println(actuator1HTML());
                             if(path.equals("/actuators/actuator2"))
-                                out.println(actuator2HTML);
+                                out.println(actuator2HTML());
                         }
                         //StringBuilder sb = new StringBuilder();
                         //String rs = in.readLine();
@@ -135,9 +154,16 @@ public class ServerService extends Service {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    private ServerSensors sSensors;// = new ServerSensors();
+
+    private String sensor1Val;// = sSensors.getSensorValue(1);
+    private String sensor2Val;// = sSensors.getSensorValue(2);
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        SensorManager sensorM = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sSensors = new ServerSensors(sensorM);
+        sensor1Val = sSensors.getSensorValue(1);
+        sensor2Val = sSensors.getSensorValue(2);
         new Thread(conn).start();
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         return START_STICKY;
@@ -153,8 +179,11 @@ public class ServerService extends Service {
                 e.printStackTrace();
             }
         }
+        sSensors.unregisterListener();
         Toast.makeText(this, "Service and Server closed", Toast.LENGTH_LONG).show();
     }
+
+
 
 
 }
