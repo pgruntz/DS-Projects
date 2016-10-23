@@ -41,7 +41,7 @@ public class ServerAcitivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.txtIP)).setText(IP);
     }
 
-    private String getLocalIpAddress() {
+    public static String getLocalIpAddress() {
         String address= null;
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {

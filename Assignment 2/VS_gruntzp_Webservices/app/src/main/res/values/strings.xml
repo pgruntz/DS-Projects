@@ -11,4 +11,5 @@
     <string name="ip">IP Address:</string>
     <string name="port">Port:</string>
     <string name="title_activity_soap">SoapActivity</string>
+    <string name="_8080">8080</string>
 </resources>

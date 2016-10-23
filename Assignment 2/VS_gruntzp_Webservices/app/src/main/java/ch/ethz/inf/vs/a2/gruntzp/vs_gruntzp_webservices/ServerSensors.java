@@ -23,8 +23,8 @@ public class ServerSensors extends AppCompatActivity implements SensorEventListe
     public ServerSensors(SensorManager sensMananger){
         this.sensorM = sensMananger;
         sensor1 = sensorM.getDefaultSensor(Sensor.TYPE_LIGHT);
-        sensor2 = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        //sensor2 = sensorM.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        //sensor2 = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensor2 = sensorM.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 
         sensor1Val="no value";
         sensor2Val="no value";
