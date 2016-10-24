@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,10 +23,10 @@ public class ServerService extends Service{
 
     private int port = 8080;
     private ServerSocket server;
-    //private String ip = ServerAcitivity.getLocalIpAddress()+":8080"; //for wlan
-    private String ip = "127.0.0.1:1234"; //for local emulator
+    private String ip = ServerAcitivity.getLocalIpAddress()+":8080"; //for wlan
+    //private String ip = "127.0.0.1:1234"; //for local emulator
 
-
+    public static Vibrator vibrator;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -55,10 +56,13 @@ public class ServerService extends Service{
     }
     private ServerSensors sSensors;// = new ServerSensors();
 
+    public static ServerService instance = null;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         SensorManager sensorM = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sSensors = new ServerSensors(sensorM);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        instance = this;
         new Thread(socketStart).start();
 
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();

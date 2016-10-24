@@ -44,7 +44,7 @@ public class Connection extends Service implements Runnable{
         return "HTTP/1.1 200 OK\r\n\r\n"+
                 "<html><body><h1>Sensors</h1>" +
                 "<ul><li><a id=\"home\" href=\"http://" + ip + "\">Home</a></li>" +
-                "<ul><li><a href = \"/sensors/sensor1\">Light</a></li><li><a href = \"/sensors/sensor2\">Temperature</a></li></ul><br><br><br></body><html>";
+                "<ul><li><a href = \"/sensors/sensor1\">Light</a></li><li><a href = \"/sensors/sensor2\">Accelerometer</a></li></ul><br><br><br></body><html>";
     }
     private String actuatorsHTML() {
         return "HTTP/1.1 200 OK\r\n\r\n" +
@@ -59,7 +59,7 @@ public class Connection extends Service implements Runnable{
     };
     private String sensor2HTML(){
         return "HTTP/1.1 200 OK\r\n\r\n"+
-                "<html><body><h1>Temperature Sensor<br><br>Value: " + sSensors.getSensorValue(2) + "</h1>" +
+                "<html><body><h1>Accelerometer<br><br>X-Value: " + sSensors.getSensorValue(2) + "</h1>" +
                 "<ul><li><a id=\"home\" href=\"http://" + ip + "\">Home</a></li></ul><br><br><br></body><html>";
     }
     private String actuator1HTML(){
@@ -136,7 +136,7 @@ public class Connection extends Service implements Runnable{
                 String body = new String(cbuf);
 
                 if(path.equals("/actuators/actuator1")){
-                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    Vibrator v = ServerService.vibrator;
                     out.println(actuator1HTML());
                     int i = body.indexOf("=");
                     if(body.substring(i+1).equals("on")){
@@ -148,18 +148,19 @@ public class Connection extends Service implements Runnable{
                     }
                 }
                 else if(path.equals("/actuators/actuator2")){
+
                     out.println(actuator2HTML());
                     int i = body.indexOf("=");
                     if(body.substring(i+1).equals("automatic")){
-                        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+                        Settings.System.putInt(ServerService.instance.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
                         out.println("Brighntness set to automatic, ");
                     }else if(body.substring(i+1).equals("dark")){
-                        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-                        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 10);
+                        Settings.System.putInt(ServerService.instance.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                        Settings.System.putInt(ServerService.instance.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 10);
                         out.println("Brighntness set to dark, ");
                     }else if (body.substring(i+1).equals("bright")){
-                        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-                        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 200);
+                        Settings.System.putInt(ServerService.instance.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                        Settings.System.putInt(ServerService.instance.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 200);
                         out.println("Brighntness set to bright, ");
                     }else{
                         out.println("No Brightness set, ");
