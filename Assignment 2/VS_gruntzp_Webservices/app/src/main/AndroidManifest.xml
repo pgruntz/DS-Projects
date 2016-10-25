@@ -3,6 +3,8 @@
     package="ch.ethz.inf.vs.a2.gruntzp.vs_gruntzp_webservices">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +22,15 @@
         <activity android:name=".RESTactivity" />
         <activity android:name=".ServerAcitivity" />
         <activity android:name=".SoapActivity"></activity>
+
+        <service
+            android:name=".ServerService"
+            android:exported="false" />
+
+
+
+
+
     </application>
 
 </manifest>

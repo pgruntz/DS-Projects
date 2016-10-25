@@ -28,6 +28,7 @@
             android:layout_weight="0.00"
             android:layout_rowSpan="2"
             android:layout_marginRight="30sp"
+            android:onClick="onClickToggle"
             />
 
         <LinearLayout
@@ -45,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtPort"
-                android:text="9999"/>
+                android:text="@string/_8080"/>
         </LinearLayout>
 
         <LinearLayout
