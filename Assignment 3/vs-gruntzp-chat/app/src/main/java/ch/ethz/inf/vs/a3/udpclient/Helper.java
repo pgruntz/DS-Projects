@@ -50,6 +50,7 @@ public class Helper {
                 s.send(sendP);
                 s.receive(recP);
             } catch (IOException e) {
+                recP = null;
                 e.printStackTrace();
             }
 

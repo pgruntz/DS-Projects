@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.UUID;
@@ -50,13 +51,13 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Connecting ..", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Connecting ..", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
                 EditText txtUserName = (EditText) findViewById(R.id.txtUserName);
                 if (tryRegister(txtUserName.getText().toString()))
-                    Toast.makeText(getApplicationContext(), "registered", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), "registered", Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
             //building the socket
             DatagramSocket socket = new DatagramSocket(NetworkConsts.UDP_PORT);
-            socket.setSoTimeout(2000);
+            socket.setSoTimeout(NetworkConsts.SOCKET_TIMEOUT);
             InetAddress address = InetAddress.getByName(NetworkConsts.SERVER_ADDRESS);
 
             // building the message
@@ -90,7 +91,13 @@ public class MainActivity extends AppCompatActivity {
 
             //Sending, receiving
             Helper.NetworkRunnable r = new Helper.NetworkRunnable(socket, sendPacket, recPacket);
+
             AsyncTask.execute(r);
+            socket.close();
+
+            // success?
+            if (r.recP == null)
+                return false;
 
             // parsing response
             String received = new String(r.recP.getData(), 0, r.recP.getLength());
@@ -100,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
             String type = o.getString("type");
             if (type.equals(MessageTypes.ACK_MESSAGE))
                 return true;
+
+
 
         } catch (SocketException e) {
             e.printStackTrace();
