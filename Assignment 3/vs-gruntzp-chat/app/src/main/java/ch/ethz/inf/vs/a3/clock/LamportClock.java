@@ -8,9 +8,7 @@ public class LamportClock implements Clock {
 
     private int time;
 
-    void setTime(int time){
-        this.time=time;
-    }
+    void setTime(int time){this.time=time;}
 
     int getTime() {
         return time;
@@ -18,12 +16,13 @@ public class LamportClock implements Clock {
 
     @Override
     public void update(Clock other) {
-
+        if(((LamportClock) other).getTime()>time)
+            time = ((LamportClock) other).getTime();
     }
 
     @Override
     public void setClock(Clock other) {
-
+        time = ((LamportClock) other).getTime();
     }
 
     @Override
@@ -33,11 +32,11 @@ public class LamportClock implements Clock {
 
     @Override
     public boolean happenedBefore(Clock other) {
-        return false;
+        return ((LamportClock) other).getTime()<time;
     }
 
     @Override
     public void setClockFromString(String clock) {
-
+        time = Integer.valueOf(clock);
     }
 }

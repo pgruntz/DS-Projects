@@ -15,7 +15,6 @@ public class VectorClock implements Clock{
     }
 
     void addProcess(Integer pid, int time){
-
     }
 
 
