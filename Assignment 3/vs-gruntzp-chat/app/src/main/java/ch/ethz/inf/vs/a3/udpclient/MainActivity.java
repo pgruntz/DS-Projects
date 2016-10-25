@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             String type = o.getString("type");
             if (type.equals(MessageTypes.ACK_MESSAGE))
                 return true;
+
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {
