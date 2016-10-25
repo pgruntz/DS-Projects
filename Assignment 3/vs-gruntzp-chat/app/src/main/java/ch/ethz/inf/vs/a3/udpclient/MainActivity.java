@@ -9,10 +9,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -37,7 +39,6 @@ import ch.ethz.inf.vs.a3.message.MessageTypes;
 public class MainActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,48 +53,63 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Connecting ..", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 EditText txtUserName = (EditText) findViewById(R.id.txtUserName);
-                Register(txtUserName.getText().toString());
+                if (tryRegister(txtUserName.getText().toString()))
+                    Toast.makeText(getApplicationContext(), "registered", Toast.LENGTH_SHORT);
+                else
+                    Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT);
             }
         });
     }
 
-    private void Register(String username) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
+    private Boolean tryRegister(String username)
+    {
+        boolean success = false;
+        for (int i = 0; i < 5; i++)
+            if (success = Register(username)) break;
+        return success;
+    }
 
-                    DatagramSocket socket = new DatagramSocket(NetworkConsts.UDP_PORT);
-                    socket.setSoTimeout(2000);
+    private Boolean Register(final String username) {
 
-                    UUID uuid = UUID.randomUUID();
-                    String message = Helper.JSONmessage(uuid.toString(), username, MessageTypes.REGISTER);
-                    byte[] sendBuf = message.getBytes();
+        try {
 
+            //building the socket
+            DatagramSocket socket = new DatagramSocket(NetworkConsts.UDP_PORT);
+            socket.setSoTimeout(2000);
+            InetAddress address = InetAddress.getByName(NetworkConsts.SERVER_ADDRESS);
 
-                    InetAddress address = InetAddress.getByName(NetworkConsts.SERVER_ADDRESS);
+            // building the message
+            UUID uuid = UUID.randomUUID();
+            String message = Helper.JSONmessage(uuid.toString(), username, MessageTypes.REGISTER);
+            byte[] sendBuf = message.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendBuf, sendBuf.length, address, NetworkConsts.UDP_PORT);
 
-                    DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, NetworkConsts.UDP_PORT);
+            //preparing response message
+            byte[] recBuf = new byte[256];
+            DatagramPacket recPacket = new DatagramPacket(recBuf, recBuf.length);
 
-                    AsyncTask.execute();
+            //Sending, receiving
+            Helper.NetworkRunnable r = new Helper.NetworkRunnable(socket, sendPacket, recPacket);
+            AsyncTask.execute(r);
 
-                    byte[] recBuf = new byte[256];
-                    packet = new DatagramPacket(recBuf, recBuf.length);
-                    socket.receive(packet);
-                    String received = new String(packet.getData(), 0, packet.getLength());
+            // parsing response
+            String received = new String(r.recP.getData(), 0, r.recP.getLength());
+            Log.d("received", received);
 
-                } catch (SocketException e) {
-                    e.printStackTrace();
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+            JSONObject o = new JSONObject(received);
+            String type = o.getString("type");
+            if (type.equals(MessageTypes.ACK_MESSAGE))
+                return true;
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
