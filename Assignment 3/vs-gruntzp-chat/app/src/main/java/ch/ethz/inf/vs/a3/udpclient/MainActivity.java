@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
 
+
                     DatagramSocket socket = new DatagramSocket(NetworkConsts.UDP_PORT);
                     socket.setSoTimeout(2000);
 
