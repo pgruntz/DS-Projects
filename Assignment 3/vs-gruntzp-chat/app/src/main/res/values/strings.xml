@@ -2,4 +2,7 @@
     <string name="app_name">vs gruntzp chat</string>
     <string name="action_settings">Settings</string>
     <string name="bgText">Chat 3000 ™</string>
+    <string name="tryRegister">trying to reigster</string>
+    <string name="doneReigster">done</string>
+    <string name="failedRegister">failed</string>
 </resources>
