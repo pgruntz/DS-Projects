@@ -16,8 +16,11 @@ import java.net.UnknownHostException;
 
 public class Helper {
 
+    // Share with all requests
     public static DatagramSocket socket;
     public static InetAddress address;
+
+    // Build JSON Message for Chat
     public static String JSONmessage(String uuid, String username, String timestamp, String type, JSONObject Body) throws JSONException {
         JSONObject o = new JSONObject();
 
@@ -32,6 +35,8 @@ public class Helper {
         return o.toString(2);
     }
 
+
+    // Can be called often. Only has effects once.
     public static synchronized boolean makeDatagramSocket() {
         if (socket == null) {
             try {
@@ -48,37 +53,15 @@ public class Helper {
         return true;
     }
 
-
+    // Simple request
     public static String JSONmessage(String uuid, String username, String type) throws JSONException {
         return JSONmessage(uuid, username, new JSONObject().toString(), type, new JSONObject());
     }
 
-    public static class NetworkRunnable implements Runnable {
-        private DatagramPacket sendP;
-        public DatagramPacket recP;
-        private DatagramSocket s;
-        private Runnable r;
-
-        public NetworkRunnable(DatagramSocket s, DatagramPacket sendP, DatagramPacket recP, Runnable callback)
-        {
-            this.s = s;
-            this.sendP = sendP;
-            this.recP = recP;
-            this.r = callback;
-        }
-        @Override
-        public void run() {
-            try {
-                s.send(sendP);
-                s.receive(recP);
-            } catch (IOException e) {
-                this.recP = null;
-                e.printStackTrace();
-            }
-            finally {
-                r.run();
-            }
-
-        }
+    public static String JSONmessage (String username, String type) throws JSONException {
+        return JSONmessage("%s", username, type);
     }
+
+    public static final int REGISTER_REQUEST = 0;
+    public static final int DEREGISTER_REQUEST = 1;
 }

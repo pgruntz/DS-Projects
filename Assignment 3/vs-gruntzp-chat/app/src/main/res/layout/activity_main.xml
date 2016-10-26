@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ch.ethz.inf.vs.a2.gruntzp.vsgruntzpchat.ch.ethz.inf.vs.a3.udpclient.MainActivity">
+    tools:context="ch.ethz.inf.vs.a3.udpclient.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -28,7 +28,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/stat_sys_phone_call_forward"
-        app:backgroundTint="@android:color/holo_blue_bright" />
+        app:backgroundTint="@android:color/holo_blue_bright"
+        android:onClick="onRegisterClicked"/>
 
     <include layout="@layout/content_main" />
 

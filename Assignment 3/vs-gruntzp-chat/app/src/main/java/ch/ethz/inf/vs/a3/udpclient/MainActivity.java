@@ -1,6 +1,5 @@
 package ch.ethz.inf.vs.a3.udpclient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -27,36 +26,81 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), getString(R.string.tryRegister), Toast.LENGTH_SHORT).show();
-                EditText txtUserName = (EditText) findViewById(R.id.txtUserName);
-                String username = txtUserName.getText().toString();
-                tryRegister(username, 5);
-            }
-        });
 
+
+
+    }
+
+    public void onRegisterClicked(View view)
+    {
+        EditText txtUserName = (EditText) findViewById(R.id.txtUserName);
+        String username = txtUserName.getText().toString();
+
+        if (username.length() == 0)
+            Toast.makeText(getApplicationContext(), getString(R.string.usernameTooShort), Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), getString(R.string.tryRegister), Toast.LENGTH_SHORT).show();
+        tryRegister(username, 5);
     }
 
     private void tryRegister(String username, int attempts)
     {
-        SendAndReceiveTask t = new SendAndReceiveTask(this, attempts, username);
-        t.execute(username, "");
+        // everything after 'this' will be be available in 'HandleResponse'
+        SendAndReceiveTask t = new SendAndReceiveTask(this, Helper.REGISTER_REQUEST, attempts, username);
+        try {
+            String message = Helper.JSONmessage(username, MessageTypes.REGISTER);
+            //first parameter is message to send, second is either this constant or a real uuid.
+            t.execute(message, SendAndReceiveTask.RANOM_UUID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            registerFailed();
+        }
+
+    }
+
+    //deregister with only one attempt
+    private void deregister(String username, String uuid)
+    {
+        SendAndReceiveTask t = new SendAndReceiveTask(this, Helper.DEREGISTER_REQUEST);
+        try {
+            String message = Helper.JSONmessage(uuid, username, MessageTypes.DEREGISTER);
+            t.execute(message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void HandleResponse(SendAndReceiveTask task) {
-        int attempts = (int) task.passthrough[0];
-        String username = (String) task.passthrough[1];
-        Boolean success = false;
+    public void HandleResponse(SendAndReceiveTask task, Object... passthrough) {
+        switch ((int) task.passthrough[0]){
+            case Helper.REGISTER_REQUEST:
+                RegisterCallbback(
+                        task,
+                        (int) task.passthrough[1],
+                        (String) task.passthrough[2]
+                        );
+                break;
+            case Helper.DEREGISTER_REQUEST:
+                deregisterCallback(task);
+                break;
+            default:
+                throw new UnknownError();
+        }
 
+    }
+
+    private void RegisterCallbback(SendAndReceiveTask task, int attempts, String username)
+    {
         try {
             //JSON response arrived
             if (task.result.getJSONObject("header").getString("type").equals(MessageTypes.ACK_MESSAGE)) {
-                success = true;
                 Toast.makeText(getApplicationContext(), getString(R.string.doneReigster), Toast.LENGTH_SHORT).show();
 
+                //TODO: (@Matthias) Intent to other Activity;
+                String uuid = task.usedUUID;
+                deregister(username, uuid);
+
+                //Necessary!!
                 return;
             }
         } catch (JSONException e) {
@@ -66,10 +110,20 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
         if (attempts > 1) {
             tryRegister(username, attempts - 1);
         } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.failedRegister), Toast.LENGTH_LONG).show();
+            registerFailed();
         }
     }
 
+    private void registerFailed() {
+        Toast.makeText(getApplicationContext(), getString(R.string.failedRegister), Toast.LENGTH_LONG).show();
+    }
+
+    private void deregisterCallback(SendAndReceiveTask task) {
+        Toast.makeText(getApplicationContext(), getString(R.string.deregistered), Toast.LENGTH_SHORT).show();
+    }
+
+
+    /// Müll ///
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

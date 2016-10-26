@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ch.ethz.inf.vs.a2.gruntzp.vsgruntzpchat.ch.ethz.inf.vs.a3.udpclient.MainActivity"
+    tools:context="ch.ethz.inf.vs.a3.udpclient.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <EditText
@@ -20,17 +20,19 @@
         android:text="Name"
         android:ems="10"
         android:id="@+id/txtUserName"
-        android:singleLine="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:maxLines="1"
+        />
 
     <TextView
-        android:text="TextView"
+        android:text="@string/bgText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/textView2"
-        tools:text="@string/bgText"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+         />
 </RelativeLayout>

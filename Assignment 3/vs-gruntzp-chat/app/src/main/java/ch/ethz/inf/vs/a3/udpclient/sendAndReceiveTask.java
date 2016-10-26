@@ -18,7 +18,7 @@ import ch.ethz.inf.vs.a3.message.MessageTypes;
 public class SendAndReceiveTask extends AsyncTask<String, Void, String> {
 
     public interface ResponseHandler {
-        void HandleResponse(SendAndReceiveTask task);
+        void HandleResponse(SendAndReceiveTask task, Object... passthrough);
     }
 
     public Object[] passthrough;
@@ -31,26 +31,28 @@ public class SendAndReceiveTask extends AsyncTask<String, Void, String> {
     }
 
     public JSONObject result = null;
+    public String usedUUID = null;
 
     protected void onPreExecute() {
         //building the socket
         Helper.makeDatagramSocket();
     }
 
+    public static final String RANOM_UUID = "random";
+
     @Override
     protected String doInBackground(String... params) {
-        // pass uuid or create a random one
-        //UUID test = UUID.randomUUID();
-        String uuid = (params[1].equals("")) ?
-                UUID.randomUUID().toString() :
-                params[1];
+        String message = params[0];
 
-        String message = null;
-        try {
-            message = Helper.JSONmessage(uuid, params[0], MessageTypes.REGISTER);
-        } catch (JSONException e) {
-            return null;
+        if (params.length > 1) {// has uuid in parameter but not in message -> generate Random or insert
+            // pass uuid in arg1 or create a random one
+            usedUUID = (params[1].equals(RANOM_UUID)) ?
+                    UUID.randomUUID().toString() :
+                    params[1];
+            // If message needs needs insertion of uuid, insert now. Otherwise it does nothing
+            message = String.format(message, usedUUID);
         }
+
         byte[] sendBuf = message.getBytes();
         DatagramPacket sendPacket = new DatagramPacket(sendBuf, sendBuf.length, Helper.address, NetworkConsts.UDP_PORT);
 
