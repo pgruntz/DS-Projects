@@ -32,11 +32,18 @@ public class LamportClock implements Clock {
 
     @Override
     public boolean happenedBefore(Clock other) {
-        return ((LamportClock) other).getTime()<time;
+        return (time<((LamportClock) other).getTime());
     }
 
     @Override
     public void setClockFromString(String clock) {
-        time = Integer.valueOf(clock);
+        try{
+            time = Integer.valueOf(clock);
+        } catch (NumberFormatException e) {}
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(time);
     }
 }
