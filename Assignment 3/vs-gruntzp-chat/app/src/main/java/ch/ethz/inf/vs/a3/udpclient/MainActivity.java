@@ -1,5 +1,6 @@
 package ch.ethz.inf.vs.a3.udpclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +99,10 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
 
                 //TODO: (@Matthias) Intent to other Activity;
                 String uuid = task.usedUUID;
+                Intent intent = new Intent(this, ChatActivity.class);
+                intent.putExtra("uuid",uuid); //To ask server for messages
+                startActivity(intent);
+
                 deregister(username, uuid);
 
                 //Necessary!!

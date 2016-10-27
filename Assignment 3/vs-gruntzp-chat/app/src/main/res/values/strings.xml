@@ -7,4 +7,6 @@
     <string name="failedRegister">failed</string>
     <string name="deregistered">deregistered</string>
     <string name="usernameTooShort">username too short</string>
+    <string name="retrieve">Retrieve chat log</string>
+    <string name="noMsg">no messages to display</string>
 </resources>
