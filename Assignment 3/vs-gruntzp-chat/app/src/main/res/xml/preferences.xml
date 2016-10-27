@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!--Could we ensure here that only valid IPs are entered-->
+    <!--android:inputType="number"-->
+    <EditTextPreference
+        android:key="pref_ip"
+        android:title="@string/pref_title_ip"
+        android:defaultValue="@string/pref_default_ip"
+        />
+
+    <EditTextPreference
+        android:key="pref_port"
+        android:title="@string/pref_title_port"
+        android:defaultValue="@string/pref_default_port"
+        android:inputType="number"
+        />
+
+
+</PreferenceScreen>

@@ -9,4 +9,13 @@
     <string name="usernameTooShort">username too short</string>
     <string name="retrieve">Retrieve chat log</string>
     <string name="noMsg">no messages to display</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings for Settings -->
+    <string name="port_bounds">Port needs to be &gt; 1024 and &lt; 65536</string>
+    <string name="pref_title_ip">Chat IP</string>
+    <string name="pref_default_ip">10.0.2.2</string>
+    <string name="pref_title_port">Chat Port</string>
+    <string name="pref_default_port">4446</string>
+
 </resources>

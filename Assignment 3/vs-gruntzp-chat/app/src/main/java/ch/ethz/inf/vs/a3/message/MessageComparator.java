@@ -1,5 +1,6 @@
 package ch.ethz.inf.vs.a3.message;
 
+//TODO: uncomment this
 import java.util.Comparator;
 //import ch.ethz.inf.vs.a3.message.Message;
 
