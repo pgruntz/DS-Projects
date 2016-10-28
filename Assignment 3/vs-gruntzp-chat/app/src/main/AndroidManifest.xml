@@ -24,6 +24,9 @@
         <activity
             android:name="ch.ethz.inf.vs.a3.udpclient.SettingsActivity"
             android:label="@string/title_activity_settings" />
+        <activity
+            android:name="ch.ethz.inf.vs.a3.udpclient.ChatActivity"
+            android:label="@string/title_activity_chat" />
     </application>
 
 </manifest>
