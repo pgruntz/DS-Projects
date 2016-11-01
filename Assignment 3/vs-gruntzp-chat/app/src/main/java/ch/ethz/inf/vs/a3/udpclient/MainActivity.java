@@ -59,17 +59,7 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
 
     }
 
-    //deregister with only one attempt
-    private void deregister(String username, String uuid)
-    {
-        SendAndReceiveTask t = new SendAndReceiveTask(this, Helper.DEREGISTER_REQUEST);
-        try {
-            String message = Helper.JSONmessage(uuid, username, MessageTypes.DEREGISTER);
-            t.execute(message);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @Override
     public void HandleResponse(SendAndReceiveTask task, Object... passthrough) {
@@ -101,9 +91,10 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
                 String uuid = task.usedUUID;
                 Intent intent = new Intent(this, ChatActivity.class);
                 intent.putExtra("uuid",uuid); //To ask server for messages
+                intent.putExtra("username", username);
                 startActivity(intent);
 
-                deregister(username, uuid);
+                //Helper.deregister(username, uuid,this);
 
                 //Necessary!!
                 return;

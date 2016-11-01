@@ -10,6 +10,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import ch.ethz.inf.vs.a3.message.MessageTypes;
+
 /**
  * Created by PhiSc on 25.10.2016.
  */
@@ -60,6 +62,18 @@ public class Helper {
 
     public static String JSONmessage (String username, String type) throws JSONException {
         return JSONmessage("%s", username, type);
+    }
+
+    //deregister with only one attempt
+    public static void deregister(String username, String uuid, SendAndReceiveTask.ResponseHandler handler)
+    {
+        SendAndReceiveTask t = new SendAndReceiveTask(handler, Helper.DEREGISTER_REQUEST);
+        try {
+            String message = Helper.JSONmessage(uuid, username, MessageTypes.DEREGISTER);
+            t.execute(message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public static final int REGISTER_REQUEST = 0;

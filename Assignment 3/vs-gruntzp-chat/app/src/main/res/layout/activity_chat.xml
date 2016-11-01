@@ -17,15 +17,26 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="18dp"
-        android:id="@+id/button" />
+        android:id="@+id/RetrieveButton" />
 
     <TextView
         android:text="@string/noMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/ChatWindow"
+        android:layout_above="@+id/RetrieveButton"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/ChatName" />
+
+    <TextView
+        android:text="@string/chat_name_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView"
-        android:layout_above="@+id/button"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/ChatName"
+        android:layout_alignParentEnd="true"
+        android:textSize="18sp"
+        android:textStyle="normal|italic" />
 </RelativeLayout>
