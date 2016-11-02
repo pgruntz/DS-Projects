@@ -21,6 +21,7 @@ import ch.ethz.inf.vs.a3.message.MessageTypes;
 public class MainActivity extends AppCompatActivity implements SendAndReceiveTask.ResponseHandler {
 
     public static MainActivity instance;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         NetworkConsts.sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
 
     private void tryRegister(String username, int attempts)
     {
+        fab.setEnabled(false);
         // everything after 'this' will be be available in 'HandleResponse'
         SendAndReceiveTask t = new SendAndReceiveTask(this, Helper.REGISTER_REQUEST, attempts, username);
         try {
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
                 Intent intent = new Intent(this, ChatActivity.class);
                 intent.putExtra("uuid",uuid); //To ask server for messages
                 intent.putExtra("username", username);
+                fab.setEnabled(true);
                 startActivity(intent);
 
                 //Helper.deregister(username, uuid,this);
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
 
     private void registerFailed() {
         Toast.makeText(getApplicationContext(), getString(R.string.failedRegister), Toast.LENGTH_LONG).show();
+        fab.setEnabled(true);
     }
 
     private void deregisterCallback(SendAndReceiveTask task) {
