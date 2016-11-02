@@ -17,7 +17,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="18dp"
-        android:id="@+id/RetrieveButton" />
+        android:id="@+id/RetrieveButton"
+        android:onClick="onRetrieveClicked"/>
 
     <TextView
         android:text="@string/noMsg"
