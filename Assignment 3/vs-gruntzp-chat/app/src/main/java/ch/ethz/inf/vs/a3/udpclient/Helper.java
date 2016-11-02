@@ -42,9 +42,9 @@ public class Helper {
     public static synchronized boolean makeDatagramSocket() {
         if (socket == null) {
             try {
-                socket = new DatagramSocket(NetworkConsts.UDP_PORT);
+                socket = new DatagramSocket(NetworkConsts.UDP_Port());
                 socket.setSoTimeout(NetworkConsts.SOCKET_TIMEOUT);
-                address = InetAddress.getByName(NetworkConsts.SERVER_ADDRESS);
+                address = InetAddress.getByName(NetworkConsts.Server_Adress());
             } catch (SocketException e) {
                 e.printStackTrace();
                 return false;

@@ -2,9 +2,11 @@ package ch.ethz.inf.vs.a3.udpclient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import ch.ethz.inf.vs.a3.message.MessageTypes;
 
 public class MainActivity extends AppCompatActivity implements SendAndReceiveTask.ResponseHandler {
 
+    public static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +30,7 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-
-
+        NetworkConsts.sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     public void onRegisterClicked(View view)
@@ -101,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), getString(R.string.retry), Toast.LENGTH_LONG).show();
         }
 
         if (attempts > 1) {
@@ -137,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements SendAndReceiveTas
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent SettingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(SettingsIntent);
+
             return true;
         }
 

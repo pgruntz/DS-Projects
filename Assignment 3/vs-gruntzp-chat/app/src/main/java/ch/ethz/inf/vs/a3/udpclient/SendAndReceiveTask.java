@@ -54,7 +54,7 @@ public class SendAndReceiveTask extends AsyncTask<String, Void, String> {
         }
 
         byte[] sendBuf = message.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendBuf, sendBuf.length, Helper.address, NetworkConsts.UDP_PORT);
+        DatagramPacket sendPacket = new DatagramPacket(sendBuf, sendBuf.length, Helper.address, NetworkConsts.UDP_Port());
 
         //preparing response message
         byte[] recBuf = new byte[256];
@@ -74,13 +74,14 @@ public class SendAndReceiveTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if (result == null) return;
+        if (result != null) {
 
-        Log.d("received", result);
-        try {
-            this.result = new JSONObject(result);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            Log.d("received", result);
+            try {
+                this.result = new JSONObject(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         this.callback.HandleResponse(this);
     }
