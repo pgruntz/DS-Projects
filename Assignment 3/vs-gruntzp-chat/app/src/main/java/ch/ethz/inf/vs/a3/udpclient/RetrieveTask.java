@@ -49,7 +49,7 @@ public class RetrieveTask extends AsyncTask<String, Void, PriorityQueue<Message>
 
         //Send message to request message retrieval from server
         byte[] sendBuf = message.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendBuf, sendBuf.length, Helper.address, NetworkConsts.UDP_PORT);
+        DatagramPacket sendPacket = new DatagramPacket(sendBuf, sendBuf.length, Helper.address, NetworkConsts.UDP_Port());
 
         //Create PriorityQueue to store all messages from server. Create receive buffer.
         byte[] recvBuf = new byte[256];
