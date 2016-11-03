@@ -50,10 +50,14 @@ public class VectorClock implements Clock{
 
     @Override
     public boolean happenedBefore(Clock other) {
+        VectorClock o2 = (VectorClock) other;
         for (int pid:vector.keySet()){
-            if(vector.get(pid)>((VectorClock)other).getTime(pid))
+            if(vector.get(pid)>(o2).getTime(pid))
                 return false;
         }
+        if (getVector().equals(o2.getVector()))
+            return false;
+
         return true;
     }
 

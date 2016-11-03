@@ -3,6 +3,7 @@ package ch.ethz.inf.vs.a3.clock;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ch.ethz.inf.vs.a3.queue.PriorityQueue;
 import ch.ethz.inf.vs.a3.clock.VectorClock;
 
 public class VectorClockTests {
@@ -253,7 +254,7 @@ public class VectorClockTests {
 		refClock.setClockFromString("{\"0\":1,\"1\":2,\"2\":3}");
 		Assert.assertEquals(refClock.toString(), "{\"0\":1,\"1\":2,\"2\":3}");
 	}
-	
+
 	@Test
 	public void convertIncorrectStringToClock() {
 		int[] refTimes = { 71, 70, 5 };
@@ -265,4 +266,80 @@ public class VectorClockTests {
 		Assert.assertEquals(refClock.toString(), "{\"0\":71,\"1\":70,\"2\":5}");
 	}
 
+	@Test
+	public void testClockSortingOne() {
+		VectorClock a = new VectorClock();
+		a.addProcess(0, 1);
+		a.addProcess(1, 0);
+
+		VectorClock b = new VectorClock();
+		b.addProcess(0, 2);
+		b.addProcess(1, 0);
+
+		VectorClock c = new VectorClock();
+		c.addProcess(0, 0);
+		c.addProcess(1, 1);
+
+		VectorClock d = new VectorClock();
+		d.addProcess(0, 0);
+		d.addProcess(1, 2);
+
+		PriorityQueue<VectorClock> priorityQueue = new PriorityQueue<VectorClock>(new VectorClockComparator());
+		priorityQueue.add(d);
+		priorityQueue.add(a);
+		priorityQueue.add(b);
+		priorityQueue.add(c);
+
+        Assert.assertEquals(priorityQueue.toString(), "[{\"0\":0,\"1\":1}, {\"0\":0,\"1\":2}, {\"0\":1,\"1\":0}, {\"0\":2,\"1\":0}]");
+	}
+
+    @Test
+    public void testClockSortingTwo() {
+        VectorClock a1 = new VectorClock();
+        a1.addProcess(0, 1);
+        a1.addProcess(1, 0);
+        a1.addProcess(2, 0);
+
+        VectorClock a2 = new VectorClock();
+        a2.addProcess(0, 1);
+        a2.addProcess(1, 1);
+        a2.addProcess(2, 0);
+
+        VectorClock a3 = new VectorClock();
+        a3.addProcess(0, 3);
+        a3.addProcess(1, 2);
+        a3.addProcess(2, 0);
+
+        VectorClock b1 = new VectorClock();
+        b1.addProcess(0, 1);
+        b1.addProcess(1, 2);
+        b1.addProcess(2, 0);
+
+        VectorClock b2 = new VectorClock();
+        b2.addProcess(0, 4);
+        b2.addProcess(1, 2);
+        b2.addProcess(2, 0);
+
+        VectorClock c1 = new VectorClock();
+        c1.addProcess(0, 2);
+        c1.addProcess(1, 0);
+        c1.addProcess(2, 0);
+
+        VectorClock c2 = new VectorClock();
+        c2.addProcess(0, 2);
+        c2.addProcess(1, 3);
+        c2.addProcess(2, 0);
+
+        PriorityQueue<VectorClock> priorityQueue = new PriorityQueue<VectorClock>(new VectorClockComparator());
+        priorityQueue.add(a1);
+        priorityQueue.add(a2);
+        priorityQueue.add(a3);
+        priorityQueue.add(b1);
+        priorityQueue.add(b2);
+        priorityQueue.add(c1);
+        priorityQueue.add(c2);
+
+        Assert.assertEquals(priorityQueue.toString(), "[{\"0\":1,\"1\":0,\"2\":0}, {\"0\":1,\"1\":1,\"2\":0}, {\"0\":1,\"1\":2,\"2\":0}, " +
+                "{\"0\":2,\"1\":0,\"2\":0}, {\"0\":3,\"1\":2,\"2\":0}, {\"0\":4,\"1\":2,\"2\":0}, {\"0\":2,\"1\":3,\"2\":0}]");
+    }
 }
